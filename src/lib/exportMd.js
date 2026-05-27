@@ -17,9 +17,13 @@ export function exportMd({ today, todos, risks, pending, summary }) {
   } else {
     for (const t of todos) {
       lines.push(`### ${t.customer} — \`${t.voc}\` (${t.priority})`)
-      lines.push(`> ${t.content}`)
-      if (t.linkedDev) lines.push(`关联：\`${t.linkedDev}\``)
       lines.push('')
+      lines.push(`> ${t.content}`)
+      lines.push('') // 隔开 blockquote，否则下一行会被 lazy continuation 吃进引用块
+      if (t.linkedDev) {
+        lines.push(`关联：\`${t.linkedDev}\``)
+        lines.push('')
+      }
       lines.push(`**建议回复要点**：${t.hint}`)
       lines.push('')
       lines.push(`**依据**：${evidenceStr(t.evidence)}`)

@@ -1,4 +1,5 @@
 import EvidenceTag from './EvidenceTag.jsx'
+import Button from './Button.jsx'
 
 const PRIORITY_STYLE = {
   P0: { color: '#fff', background: '#dc2626' },
@@ -9,36 +10,9 @@ const PRIORITY_STYLE = {
 function PriorityBadge({ priority }) {
   const style = PRIORITY_STYLE[priority] || { color: '#fff', background: '#6b7280' }
   return (
-    <span
-      style={{
-        ...style,
-        fontSize: 11,
-        fontWeight: 600,
-        padding: '2px 6px',
-        borderRadius: 4,
-      }}
-    >
+    <span style={{ ...style, fontSize: 11, fontWeight: 600, padding: '2px 6px', borderRadius: 4 }}>
       {priority}
     </span>
-  )
-}
-
-function ActionButton({ children, onClick, primary }) {
-  return (
-    <button
-      onClick={onClick}
-      style={{
-        fontSize: 12,
-        padding: '4px 10px',
-        background: primary ? '#2563eb' : '#fff',
-        color: primary ? '#fff' : '#374151',
-        border: `1px solid ${primary ? '#2563eb' : '#d1d5db'}`,
-        borderRadius: 4,
-        cursor: 'pointer',
-      }}
-    >
-      {children}
-    </button>
   )
 }
 
@@ -77,12 +51,12 @@ export default function Todos({ todos, dispatch }) {
                   </span>
                 )}
                 <div style={{ marginLeft: 'auto', display: 'flex', gap: 6 }}>
-                  <ActionButton primary onClick={() => dispatch({ type: 'REPLY_TODO', voc: t.voc })}>
+                  <Button variant="primary" onClick={() => dispatch({ type: 'REPLY_TODO', payload: t.voc })}>
                     已回复
-                  </ActionButton>
-                  <ActionButton onClick={() => dispatch({ type: 'POSTPONE_TODO', voc: t.voc })}>
+                  </Button>
+                  <Button onClick={() => dispatch({ type: 'POSTPONE_TODO', payload: t.voc })}>
                     推迟
-                  </ActionButton>
+                  </Button>
                 </div>
               </div>
               <div style={{ marginBottom: 8 }}>{t.content}</div>
