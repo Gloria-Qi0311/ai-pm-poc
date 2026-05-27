@@ -1,4 +1,5 @@
 import EvidenceTag from './EvidenceTag.jsx'
+import Button from './Button.jsx'
 
 function Tag({ children, color = '#6b7280', bg = '#f3f4f6' }) {
   return (
@@ -14,31 +15,6 @@ function Tag({ children, color = '#6b7280', bg = '#f3f4f6' }) {
     >
       {children}
     </span>
-  )
-}
-
-function ActionButton({ children, onClick, variant = 'default' }) {
-  const styles = {
-    default: { bg: '#fff', color: '#374151', border: '#d1d5db' },
-    primary: { bg: '#2563eb', color: '#fff', border: '#2563eb' },
-    danger:  { bg: '#fff', color: '#dc2626', border: '#fca5a5' },
-  }
-  const s = styles[variant]
-  return (
-    <button
-      onClick={onClick}
-      style={{
-        fontSize: 12,
-        padding: '4px 10px',
-        background: s.bg,
-        color: s.color,
-        border: `1px solid ${s.border}`,
-        borderRadius: 4,
-        cursor: 'pointer',
-      }}
-    >
-      {children}
-    </button>
   )
 }
 
@@ -61,14 +37,7 @@ export default function Pending({ pending, dispatch }) {
               }}
             >
               {p.type === 'suggestedLink' && (
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 8,
-                    flexWrap: 'wrap',
-                  }}
-                >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
                   <Tag color="#fff" bg="#0891b2">
                     疑似关联{p.inferred ? '（推断）' : ''}
                   </Tag>
@@ -76,43 +45,36 @@ export default function Pending({ pending, dispatch }) {
                   <span style={{ color: '#6b7280' }}>↔</span>
                   <code>{p.dev}</code>
                   <div style={{ marginLeft: 'auto', display: 'flex', gap: 6 }}>
-                    <ActionButton
+                    <Button
                       variant="primary"
                       onClick={() =>
                         dispatch({ type: 'CONFIRM_LINK', payload: { voc: p.voc, dev: p.dev } })
                       }
                     >
                       确认
-                    </ActionButton>
-                    <ActionButton
+                    </Button>
+                    <Button
                       variant="danger"
                       onClick={() =>
                         dispatch({ type: 'REJECT_LINK', payload: { voc: p.voc, dev: p.dev } })
                       }
                     >
                       否
-                    </ActionButton>
+                    </Button>
                   </div>
                 </div>
               )}
               {p.type === 'customerConfirmation' && (
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 8,
-                    flexWrap: 'wrap',
-                  }}
-                >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
                   <Tag color="#fff" bg="#7c3aed">待客户确认</Tag>
                   <code>{p.dev}</code>
                   <div style={{ marginLeft: 'auto' }}>
-                    <ActionButton
+                    <Button
                       variant="primary"
-                      onClick={() => dispatch({ type: 'CONFIRM_CUSTOMER', dev: p.dev })}
+                      onClick={() => dispatch({ type: 'CONFIRM_CUSTOMER', payload: p.dev })}
                     >
                       已确认
-                    </ActionButton>
+                    </Button>
                   </div>
                 </div>
               )}

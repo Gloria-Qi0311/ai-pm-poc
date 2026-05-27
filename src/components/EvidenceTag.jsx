@@ -1,4 +1,5 @@
 // #8: 依据 chip 点击展开看原文。同一行内同时只展开一条，再次点击或换一条会切换。
+// chip 用 <button> 包，键盘可达（自检 #14 fix）。
 import { useState } from 'react'
 import { evidenceText } from '../lib/evidence.js'
 
@@ -22,8 +23,9 @@ export default function EvidenceTag({ items }) {
         {items.map((id, i) => {
           const isOpen = openId === id
           return (
-            <code
+            <button
               key={id + '-' + i}
+              type="button"
               onClick={() => setOpenId(isOpen ? null : id)}
               title="点击展开/收起原文"
               style={{
@@ -33,13 +35,14 @@ export default function EvidenceTag({ items }) {
                 borderRadius: 4,
                 fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
                 fontSize: 11,
+                lineHeight: 1.4,
                 cursor: 'pointer',
-                userSelect: 'none',
                 border: isOpen ? '1px solid #93c5fd' : '1px solid transparent',
+                margin: 0,
               }}
             >
               {id}
-            </code>
+            </button>
           )
         })}
       </div>
