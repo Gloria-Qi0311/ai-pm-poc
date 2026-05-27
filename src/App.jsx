@@ -1,14 +1,13 @@
-import { useState } from 'react'
+import { useReducer } from 'react'
 import { compute } from './compose.js'
-import { initialState, TODAY } from './state.js'
+import { initialState, reducer, TODAY } from './state.js'
 import Summary from './components/Summary.jsx'
 import Todos from './components/Todos.jsx'
 import Risks from './components/Risks.jsx'
 import Pending from './components/Pending.jsx'
 
 export default function App() {
-  // v1: state 暂为只读，#9 接入 useReducer 后才有人工确认按钮。
-  const [state] = useState(initialState)
+  const [state, dispatch] = useReducer(reducer, initialState)
   const { todos, risks, pending, summary } = compute(state)
 
   return (
@@ -24,16 +23,49 @@ export default function App() {
         minHeight: '100vh',
       }}
     >
-      <header style={{ borderBottom: '1px solid #e5e7eb', paddingBottom: 12, marginBottom: 20 }}>
-        <h1 style={{ margin: 0, fontSize: 22 }}>PM 每日跟进助手</h1>
-        <div style={{ color: '#6b7280', fontSize: 13 }}>今日 {TODAY}</div>
+      <header
+        style={{
+          borderBottom: '1px solid #e5e7eb',
+          paddingBottom: 12,
+          marginBottom: 20,
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'flex-end',
+        }}
+      >
+        <div>
+          <h1 style={{ margin: 0, fontSize: 22 }}>PM 每日跟进助手</h1>
+          <div style={{ color: '#6b7280', fontSize: 13 }}>今日 {TODAY}</div>
+        </div>
+        <button
+          onClick={() => dispatch({ type: 'RESET' })}
+          style={{
+            fontSize: 12,
+            padding: '4px 10px',
+            background: '#fff',
+            border: '1px solid #d1d5db',
+            borderRadius: 4,
+            cursor: 'pointer',
+            color: '#374151',
+          }}
+        >
+          重置
+        </button>
       </header>
       <Summary summary={summary} />
-      <Todos todos={todos} />
+      <Todos todos={todos} dispatch={dispatch} />
       <Risks risks={risks} />
-      <Pending pending={pending} />
-      <footer style={{ marginTop: 32, paddingTop: 12, borderTop: '1px solid #e5e7eb', fontSize: 12, color: '#9ca3af' }}>
-        v1 · 仅展示。点击展开依据原文（#8）、人工确认按钮（#9）、导出 markdown（#10）见后续 PR。
+      <Pending pending={pending} dispatch={dispatch} />
+      <footer
+        style={{
+          marginTop: 32,
+          paddingTop: 12,
+          borderTop: '1px solid #e5e7eb',
+          fontSize: 12,
+          color: '#9ca3af',
+        }}
+      >
+        v1 · 点击依据 chip 展开原文。人工确认/已回复改本地 state，刷新会丢。导出 markdown 见 #10。
       </footer>
     </div>
   )
