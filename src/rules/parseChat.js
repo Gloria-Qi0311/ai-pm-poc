@@ -15,8 +15,8 @@ const SIGNAL_RULES = [
 const LINK_HINT_RE = /应该和|是同一个|感觉和.*?有关系|和.*?有关系/
 
 function timeToEvidenceId(time) {
-  // '2026-05-16 09:12' -> 'chat@09:12'
-  return 'chat@' + time.split(' ')[1]
+  // '2026-05-16 09:12' -> 'chat@2026-05-16 09:12'（含完整日期，避免跨天 HH:MM 重复时取错）
+  return 'chat@' + time
 }
 
 export function parseChat(chatRecords, vocData = [], devData = []) {

@@ -14,7 +14,7 @@ export function resolveEvidence(id) {
   }
   if (id.startsWith('chat@')) {
     const time = id.slice('chat@'.length)
-    const record = chat.find(c => c.time.endsWith(time))
+    const record = chat.find(c => c.time === time)
     return record ? { kind: 'chat', id, record } : null
   }
   return null

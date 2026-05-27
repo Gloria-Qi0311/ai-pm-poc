@@ -8,15 +8,15 @@ import { TODAY } from '../state.js'
 
 function traceDependencies(devItem, allDev, seen = new Set()) {
   const out = []
-  const m = devItem.note.match(/依赖\s*(DEV-\d+)/)
-  if (!m) return out
-  const depId = m[1]
-  if (seen.has(depId)) return out
-  seen.add(depId)
-  const dep = allDev.find(d => d.id === depId)
-  if (!dep) return out
-  out.push(dep)
-  out.push(...traceDependencies(dep, allDev, seen))
+  const deps = [...devItem.note.matchAll(/依赖\s*(DEV-\d+)/g)].map(m => m[1])
+  for (const depId of deps) {
+    if (seen.has(depId)) continue
+    seen.add(depId)
+    const dep = allDev.find(d => d.id === depId)
+    if (!dep) continue
+    out.push(dep)
+    out.push(...traceDependencies(dep, allDev, seen))
+  }
   return out
 }
 
