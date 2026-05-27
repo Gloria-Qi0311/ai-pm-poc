@@ -1,4 +1,4 @@
-import EvidenceChips from './EvidenceChips.jsx'
+import EvidenceTag from './EvidenceTag.jsx'
 
 const PRIORITY_STYLE = {
   P0: { color: '#fff', background: '#dc2626' },
@@ -23,7 +23,26 @@ function PriorityBadge({ priority }) {
   )
 }
 
-export default function Todos({ todos }) {
+function ActionButton({ children, onClick, primary }) {
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        fontSize: 12,
+        padding: '4px 10px',
+        background: primary ? '#2563eb' : '#fff',
+        color: primary ? '#fff' : '#374151',
+        border: `1px solid ${primary ? '#2563eb' : '#d1d5db'}`,
+        borderRadius: 4,
+        cursor: 'pointer',
+      }}
+    >
+      {children}
+    </button>
+  )
+}
+
+export default function Todos({ todos, dispatch }) {
   return (
     <section style={{ marginBottom: 24 }}>
       <h2 style={{ fontSize: 15, marginBottom: 10 }}>今日待办（{todos.length}）</h2>
@@ -41,7 +60,15 @@ export default function Todos({ todos }) {
                 background: '#fff',
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 8,
+                  marginBottom: 6,
+                  flexWrap: 'wrap',
+                }}
+              >
                 <PriorityBadge priority={t.priority} />
                 <strong>{t.customer}</strong>
                 {t.linkedDev && (
@@ -49,6 +76,14 @@ export default function Todos({ todos }) {
                     关联 <code>{t.linkedDev}</code>
                   </span>
                 )}
+                <div style={{ marginLeft: 'auto', display: 'flex', gap: 6 }}>
+                  <ActionButton primary onClick={() => dispatch({ type: 'REPLY_TODO', voc: t.voc })}>
+                    已回复
+                  </ActionButton>
+                  <ActionButton onClick={() => dispatch({ type: 'POSTPONE_TODO', voc: t.voc })}>
+                    推迟
+                  </ActionButton>
+                </div>
               </div>
               <div style={{ marginBottom: 8 }}>{t.content}</div>
               <div
@@ -64,7 +99,7 @@ export default function Todos({ todos }) {
                 <span style={{ color: '#6b7280', marginRight: 4 }}>建议回复要点：</span>
                 {t.hint}
               </div>
-              <EvidenceChips items={t.evidence} />
+              <EvidenceTag items={t.evidence} />
             </div>
           ))}
         </div>

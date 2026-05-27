@@ -1,4 +1,4 @@
-import EvidenceChips from './EvidenceChips.jsx'
+import EvidenceTag from './EvidenceTag.jsx'
 
 const TYPE_STYLE = {
   '已上线未确认': { color: '#fff', background: '#7c3aed' },
@@ -52,7 +52,7 @@ export default function Risks({ risks }) {
                 )}
               </div>
               <div style={{ fontSize: 13, color: '#374151' }}>{r.action}</div>
-              <EvidenceChips items={r.evidence} />
+              <EvidenceTag items={r.evidence} />
             </div>
           ))}
         </div>
