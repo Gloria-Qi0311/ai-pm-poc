@@ -7,6 +7,7 @@ import Todos from './components/Todos.jsx'
 import Risks from './components/Risks.jsx'
 import Pending from './components/Pending.jsx'
 import ExportModal from './components/ExportModal.jsx'
+import RawData from './components/RawData.jsx'
 
 const headerBtnStyle = {
   fontSize: 12,
@@ -64,6 +65,7 @@ export default function App() {
       <Todos todos={todos} dispatch={dispatch} />
       <Risks risks={risks} />
       <Pending pending={pending} dispatch={dispatch} />
+      <RawData />
       <footer
         style={{
           marginTop: 32,
