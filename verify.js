@@ -1,14 +1,6 @@
 // 验收脚本：跑 SPEC §8 七条验收。
 // 用法：node verify.js（或 npm run verify）
-import { voc } from './src/data/voc.js'
-import { dev } from './src/data/dev.js'
-import { chat } from './src/data/chat.js'
-import { parseChat } from './src/rules/parseChat.js'
-import { enrich } from './src/rules/enrich.js'
-import { getTodos } from './src/rules/todos.js'
-import { getRisks } from './src/rules/risks.js'
-import { getPendingConfirmations } from './src/rules/pending.js'
-import { getSummary } from './src/rules/summary.js'
+import { compute } from './src/compose.js'
 import { resolveEvidence } from './src/lib/evidence.js'
 import { initialState } from './src/state.js'
 
@@ -18,17 +10,6 @@ function check(label, ok, detail) {
   else { console.log(`  ✗ ${label}${detail ? '\n      ' + detail : ''}`); fail++ }
 }
 function section(name) { console.log(`\n[${name}]`) }
-
-function compute(state) {
-  const chatParsed = parseChat(chat, voc, dev)
-  const enriched = enrich({ voc, dev, chat }, chatParsed)
-  const fullData = { ...enriched, chatParsed }
-  const todos = getTodos(fullData, state)
-  const risks = getRisks(fullData, state)
-  const pending = getPendingConfirmations(fullData, state)
-  const summary = getSummary({ todos, risks, pending })
-  return { todos, risks, pending, summary }
-}
 
 // === 初始 state（无人工确认） ===
 const r0 = compute({ ...initialState })
